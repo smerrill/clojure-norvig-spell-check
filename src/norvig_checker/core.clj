@@ -15,7 +15,9 @@
       (for [a (range (count word))]
         (list (deletion a word) (inserts a word) (replaces a word) (transposition a word))))))
 
-(defn known [words] (filter #(contains? NWORDS %) words))
+(defn known [words]
+  (let [x (filter #(contains? NWORDS %) words)]
+    (if (empty? x) nil x)))
 (defn correct [word]
   (or
     (known (list words))

@@ -10,15 +10,19 @@
 (defn inserts [a word] (map #(apply str (concat (take a word) (list %) (drop a word))) alphabet))
 
 (defn edits1 [word]
-  (remove empty? 
+  (remove empty? ; @TODO: Fix "transposition" fn so this can be removed.
     (flatten 
       (for [a (range (count word))]
         (list (deletion a word) (inserts a word) (replaces a word) (transposition a word))))))
 
 (defn known [words]
   (let [x (filter #(contains? NWORDS %) words)]
-    (if (empty? x) nil x)))
+    (if (empty? x) nil x))) ; @TODO: Is there a more idiomatic way to do this?
 (defn correct [word]
-  (let [x (or (known (list word)) (known (edits1 word)) (known (flatten (map edits1 (edits1 word)))) (list word))]
-    (key (first (sort (reduce merge (map #(hash-map % (get NWORDS %)) x)))))))
+  (key (first (sort (reduce merge (map #(hash-map % (get NWORDS %)) ; @TODO: This can likely be done better.
+    (or
+      (known (list word))
+      (known (edits1 word))
+      (known (flatten (map edits1 (edits1 word))))
+      (list word))))))))
 

@@ -19,7 +19,6 @@
   (let [x (filter #(contains? NWORDS %) words)]
     (if (empty? x) nil x)))
 (defn correct [word]
-  (or
-    (known (list words))
-    (known (edits1 word))))
+  (let [x (or (known (list word)) (known (edits1 word)) (known (flatten (map edits1 (edits1 word)))) (list word))]
+    (key (first (sort (reduce merge (map #(hash-map % (get NWORDS %)) x)))))))
 

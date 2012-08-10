@@ -1,7 +1,7 @@
 (ns norvig-checker.core)
-(use '[clojure.string :only (lower-case)])
+  (use '[clojure.string :only (lower-case)])
 (defn words-in [x] (re-seq #"[a-z]+" (lower-case x)))
-;(def NWORDS (frequencies (words-in (slurp "big.txt")))) ; @TODO: Move from slurp.
+(def NWORDS (frequencies (words-in (slurp "big.txt")))) ; @TODO: Move from slurp.
 (def alphabet "abcdefghijklmnopqrstuvwxyz")
 
 (defn deletion [a word] (list (apply str (concat (take a word) (drop (inc a) word)))))
